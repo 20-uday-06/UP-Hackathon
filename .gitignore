@@ -1,0 +1,24 @@
+# Python cache and environments
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+
+# Local databases and environment files
+*.db
+*.sqlite
+*.sqlite3
+.env
+
+# VS Code and system files
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Test and coverage artifacts
+.pytest_cache/
+.coverage
+htmlcov/

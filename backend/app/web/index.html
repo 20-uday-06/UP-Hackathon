@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UP Maternal Care Console</title>
+    <style>
+      :root {
+        --bg: #f3f5f7;
+        --card: #ffffff;
+        --ink: #112031;
+        --muted: #4a5b6b;
+        --primary: #0a7f6f;
+        --accent: #f59e0b;
+        --border: #d8e1e8;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", "Noto Sans", sans-serif;
+        background: radial-gradient(circle at 20% 10%, #e7fff5, transparent 25%), var(--bg);
+        color: var(--ink);
+      }
+      header {
+        background: linear-gradient(120deg, #0a7f6f, #115e59);
+        color: white;
+        padding: 18px 20px;
+      }
+      header h1 { margin: 0; font-size: 1.4rem; }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 14px;
+        padding: 14px;
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 12px;
+      }
+      .card h2 { margin: 0 0 10px; font-size: 1.03rem; }
+      label { display: block; font-size: 0.82rem; color: var(--muted); margin-top: 8px; }
+      input, select, textarea {
+        width: 100%;
+        margin-top: 4px;
+        padding: 8px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: #fff;
+      }
+      textarea { min-height: 60px; resize: vertical; }
+      button {
+        margin-top: 10px;
+        border: none;
+        border-radius: 8px;
+        padding: 8px 12px;
+        background: var(--primary);
+        color: white;
+        cursor: pointer;
+      }
+      button.secondary { background: var(--accent); color: #1f2937; }
+      pre {
+        background: #0f172a;
+        color: #d1fae5;
+        border-radius: 8px;
+        padding: 10px;
+        overflow: auto;
+        font-size: 0.78rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>UP Maternal Care Console</h1>
+      <div>Operational demo for pregnancy registration to referral closure</div>
+    </header>
+
+    <section class="grid">
+      <div class="card">
+        <h2>Pregnancy Registration</h2>
+        <label>Beneficiary Name<input id="p_name" value="Test Devi" /></label>
+        <label>Age<input id="p_age" type="number" value="36" /></label>
+        <label>Husband Name<input id="p_hname" value="Test Kumar" /></label>
+        <label>Mobile<input id="p_mobile" value="919555555555" /></label>
+        <label>Village/Ward<input id="p_village" value="Ward 3" /></label>
+        <label>Block<input id="p_block" value="Block A" /></label>
+        <label>District<input id="p_district" value="Lucknow" /></label>
+        <label>LMP Date<input id="p_lmp" type="date" /></label>
+        <button onclick="createPregnancy()">Create Pregnancy</button>
+      </div>
+
+      <div class="card">
+        <h2>ANC Visit + HRP</h2>
+        <label>Pregnancy ID<input id="anc_pid" /></label>
+        <label>Visit Date<input id="anc_date" type="date" /></label>
+        <label>Recorded By<input id="anc_user" value="asha_01" /></label>
+        <label>BP Systolic<input id="anc_sys" type="number" value="165" /></label>
+        <label>BP Diastolic<input id="anc_dia" type="number" value="112" /></label>
+        <label>Weight (kg)<input id="anc_weight" type="number" value="62" /></label>
+        <label>Hb (g/dl)<input id="anc_hb" type="number" value="6.8" step="0.1" /></label>
+        <label>Fundal Height (cm)<input id="anc_fundal" type="number" value="30" /></label>
+        <label>Fetal Heart Rate<input id="anc_fhr" type="number" value="145" /></label>
+        <label>Fetal Presentation
+          <select id="anc_presentation">
+            <option>cephalic</option>
+            <option selected>breech</option>
+            <option>transverse</option>
+            <option>other</option>
+          </select>
+        </label>
+        <label>Urine Albumin
+          <select id="anc_albumin">
+            <option>nil</option><option>trace</option><option>1+</option><option>2+</option><option selected>3+</option><option>4+</option>
+          </select>
+        </label>
+        <label>Urine Sugar
+          <select id="anc_sugar"><option selected>nil</option><option>trace</option><option>1+</option><option>2+</option><option>3+</option><option>4+</option></select>
+        </label>
+        <label>GDM OGTT<input id="anc_gdm" type="number" value="155" /></label>
+        <label>TT Vaccination
+          <select id="anc_tt"><option>TT1_given</option><option selected>TT2_given</option><option>booster</option><option>not_due</option><option>refused</option></select>
+        </label>
+        <button onclick="createAnc()">Save ANC Visit</button>
+      </div>
+
+      <div class="card">
+        <h2>Birth Plan</h2>
+        <label>Pregnancy ID<input id="bp_pid" /></label>
+        <label>Facility ID<input id="bp_facility" value="fru_lko_01" /></label>
+        <label>Facility Type
+          <select id="bp_type"><option>PHC</option><option>CHC</option><option selected>FRU</option><option>DH</option><option>Medical_College</option></select>
+        </label>
+        <label>EDD Confirmed<input id="bp_edd" type="date" /></label>
+        <label>Transport
+          <select id="bp_transport"><option selected>102</option><option>108</option><option>private</option><option>community</option></select>
+        </label>
+        <label>Emergency Contact<input id="bp_contact_name" value="Shyam" /></label>
+        <label>Emergency Phone<input id="bp_contact_phone" value="918888888888" /></label>
+        <label>Blood Donor Arranged
+          <select id="bp_donor"><option value="true" selected>true</option><option value="false">false</option></select>
+        </label>
+        <button onclick="createBirthPlan()">Create/Update Birth Plan</button>
+      </div>
+
+      <div class="card">
+        <h2>Referral Flow</h2>
+        <label>Pregnancy ID<input id="r_pid" /></label>
+        <label>Reason<textarea id="r_reason">Severe pre-eclampsia</textarea></label>
+        <button onclick="createReferral()">Create Referral</button>
+        <label>Referral ID<input id="r_id" /></label>
+        <label>Stage
+          <select id="r_stage">
+            <option>facility_ack</option>
+            <option>doctor_viewed</option>
+            <option>dispatch</option>
+            <option>pickup</option>
+            <option>arrival</option>
+            <option>admission</option>
+            <option>outcome</option>
+          </select>
+        </label>
+        <button class="secondary" onclick="advanceReferral()">Advance Stage</button>
+      </div>
+
+      <div class="card">
+        <h2>Jobs and Dashboard</h2>
+        <button onclick="runDailyJobs()">Run Daily Jobs</button>
+        <button class="secondary" onclick="loadSummary()">Load State Summary</button>
+        <button class="secondary" onclick="loadAlerts()">Load Alerts</button>
+      </div>
+
+      <div class="card">
+        <h2>Output</h2>
+        <pre id="out">Ready</pre>
+      </div>
+    </section>
+
+    <script>
+      const api = '/api/v1';
+      const out = (data) => {
+        document.getElementById('out').textContent = JSON.stringify(data, null, 2);
+      };
+
+      const today = new Date();
+      const fmt = (d) => d.toISOString().slice(0, 10);
+      document.getElementById('p_lmp').value = fmt(new Date(today.getTime() - 250 * 86400000));
+      document.getElementById('anc_date').value = fmt(today);
+      document.getElementById('bp_edd').value = fmt(new Date(today.getTime() + 30 * 86400000));
+
+      async function createPregnancy() {
+        const payload = {
+          beneficiary_name: document.getElementById('p_name').value,
+          age: Number(document.getElementById('p_age').value),
+          husband_name: document.getElementById('p_hname').value,
+          mobile_primary: document.getElementById('p_mobile').value,
+          address_village_ward: document.getElementById('p_village').value,
+          address_block: document.getElementById('p_block').value,
+          address_district: document.getElementById('p_district').value,
+          lmp_date: document.getElementById('p_lmp').value,
+          registration_source: 'asha',
+          previous_lscs: true
+        };
+        const res = await fetch(api + '/pregnancies', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
+        const data = await res.json();
+        document.getElementById('anc_pid').value = data.pregnancy_id;
+        document.getElementById('bp_pid').value = data.pregnancy_id;
+        document.getElementById('r_pid').value = data.pregnancy_id;
+        out(data);
+      }
+
+      async function createAnc() {
+        const payload = {
+          pregnancy_id: document.getElementById('anc_pid').value,
+          visit_date: document.getElementById('anc_date').value,
+          recorded_by_user_id: document.getElementById('anc_user').value,
+          bp_systolic: Number(document.getElementById('anc_sys').value),
+          bp_diastolic: Number(document.getElementById('anc_dia').value),
+          weight_kg: Number(document.getElementById('anc_weight').value),
+          hb_gdl: Number(document.getElementById('anc_hb').value),
+          fundal_height_cm: Number(document.getElementById('anc_fundal').value),
+          fetal_heart_rate_bpm: Number(document.getElementById('anc_fhr').value),
+          fetal_presentation: document.getElementById('anc_presentation').value,
+          urine_albumin: document.getElementById('anc_albumin').value,
+          urine_sugar: document.getElementById('anc_sugar').value,
+          hiv_status: 'negative',
+          syphilis_rpr_result: 'negative',
+          gdm_ogtt_2hr_pg_mgdl: Number(document.getElementById('anc_gdm').value),
+          tt_vaccination: document.getElementById('anc_tt').value,
+          next_anc_due_date: fmt(new Date(today.getTime() + 28 * 86400000))
+        };
+        const res = await fetch(api + '/anc-visits', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
+        out(await res.json());
+      }
+
+      async function createBirthPlan() {
+        const payload = {
+          pregnancy_id: document.getElementById('bp_pid').value,
+          delivery_facility_id: document.getElementById('bp_facility').value,
+          delivery_facility_type: document.getElementById('bp_type').value,
+          edd_confirmed_date: document.getElementById('bp_edd').value,
+          transport_mode: document.getElementById('bp_transport').value,
+          emergency_contact_1_name: document.getElementById('bp_contact_name').value,
+          emergency_contact_1_phone: document.getElementById('bp_contact_phone').value,
+          blood_donor_arranged: document.getElementById('bp_donor').value === 'true'
+        };
+        const res = await fetch(api + '/birth-plans', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
+        out(await res.json());
+      }
+
+      async function createReferral() {
+        const payload = {
+          pregnancy_id: document.getElementById('r_pid').value,
+          initiated_by_user_id: 'mo_01',
+          referral_reason: document.getElementById('r_reason').value,
+          urgency_level: 'emergency',
+          origin_facility_id: 'chc_01',
+          destination_facility_id: 'fru_lko_01'
+        };
+        const res = await fetch(api + '/referrals', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
+        const data = await res.json();
+        document.getElementById('r_id').value = data.referral_id;
+        out(data);
+      }
+
+      async function advanceReferral() {
+        const referralId = document.getElementById('r_id').value;
+        const stage = document.getElementById('r_stage').value;
+        const payload = { actor_user_id: 'workflow_user', stage };
+        if (stage === 'dispatch') payload.ambulance_id = 'AMB102-11';
+        if (stage === 'admission') payload.admission_id = 'ADM-100';
+        if (stage === 'outcome') payload.outcome = 'delivered';
+
+        const res = await fetch(`${api}/referrals/${referralId}/stage`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
+        out(await res.json());
+      }
+
+      async function runDailyJobs() {
+        const res = await fetch(api + '/jobs/run-daily', { method: 'POST' });
+        out(await res.json());
+      }
+
+      async function loadSummary() {
+        const res = await fetch(api + '/dashboards/state-summary');
+        out(await res.json());
+      }
+
+      async function loadAlerts() {
+        const res = await fetch(api + '/alerts');
+        out(await res.json());
+      }
+    </script>
+  </body>
+</html>
