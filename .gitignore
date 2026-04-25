@@ -1,24 +1,24 @@
-# Python cache and environments
+# Python caches
 __pycache__/
 *.py[cod]
-*.pyo
-*.pyd
+
+# Virtual environments
 .venv/
 venv/
 env/
 
-# Local databases and environment files
-*.db
-*.sqlite
-*.sqlite3
+# Environment files
 .env
+*.env.local
 
-# VS Code and system files
-.vscode/
+# SQLite local databases
+*.db
+*.sqlite3
+
+# OS/editor files
 .DS_Store
 Thumbs.db
-
-# Test and coverage artifacts
-.pytest_cache/
-.coverage
-htmlcov/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/tasks.json
